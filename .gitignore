@@ -1,4 +1,6 @@
 venv/
 repos/
-src/__pycache__
 .DS_Store
+tests_/
+*/__pycache__
+*/*/__pycache__

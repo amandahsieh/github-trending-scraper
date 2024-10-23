@@ -1,0 +1,4 @@
+requests
+apscheduler
+pytest
+pytest-mock
