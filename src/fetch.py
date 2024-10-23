@@ -17,7 +17,14 @@ def fetch_repos(period: str, language: Optional[str] = "") -> List[dict]:
     language_param = urlquote(language, safe="+") if language else ""
     url = f"{API_REPOS}?language={language_param}&since={period}"
 
-    res = requests.get(url).json()
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        res = response.json()
+    except requests.RequestException as e:
+        print(f"Error fetching repositories: {e}")
+        return []
+
     repos = []
     for repo in res:
         filtered_repo = {col: repo.get(col) for col in DESIRED_COLUMNS}
