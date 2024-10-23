@@ -1,8 +1,7 @@
 import requests
-from typing import List
-from .github_api import (API_LANGUAGES)
+from src.api.github_api import API_LANGUAGES
 
-def languages_list() -> List[dict]:
+def languages_list() -> list:
     try:
         response = requests.get(API_LANGUAGES)
         response.raise_for_status()
@@ -11,9 +10,9 @@ def languages_list() -> List[dict]:
         print(f"Error fetching languages: {e}")
         return []
 
-def valid_language(language: str) -> bool:
+def is_valid_language(language: str) -> bool:
     if not language:
         return False
+
     languages = languages_list()
-    language = language.lower()
-    return any(language == lan["name"].lower() for lan in languages)
+    return any(language.lower() == lan["name"].lower() for lan in languages)

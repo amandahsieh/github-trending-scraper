@@ -1,14 +1,13 @@
 from typing import Optional, List
 import requests
 from urllib.parse import quote as urlquote
-
-from .valid import is_valid_language
+from src.utils.validator import is_valid_language
 from .github_api import API_REPOS
 
 DESIRED_COLUMNS = ["author", "url", "stars", "forks", "language"]
 
 def fetch_repos(period: str, language: Optional[str] = "") -> List[dict]:
-    if not isinstance(language, (str, type(None))) or (language and not is_valid_language(language)):
+    if language and not is_valid_language(language):
         raise ValueError(f"Invalid Language: {language}")
 
     if period not in ("daily", "weekly", "monthly"):
@@ -20,15 +19,12 @@ def fetch_repos(period: str, language: Optional[str] = "") -> List[dict]:
     try:
         response = requests.get(url)
         response.raise_for_status()
-        res = response.json()
+        repos = response.json()
     except requests.RequestException as e:
         print(f"Error fetching repositories: {e}")
         return []
 
-    repos = []
-    for repo in res:
-        filtered_repo = {col: repo.get(col) for col in DESIRED_COLUMNS}
-        filtered_repo["fullname"] = f"{repo['author']}/{repo['name']}"
-        repos.append(filtered_repo)
-
-    return repos
+    return [
+        {col: repo.get(col) for col in DESIRED_COLUMNS}
+        for repo in repos
+    ]
