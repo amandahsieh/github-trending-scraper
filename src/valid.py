@@ -16,7 +16,4 @@ def valid_language(language: str) -> bool:
         return False
     languages = languages_list()
     language = language.lower()
-    for lan in languages:
-        if language == lan["name"]:
-            return True
-    return False
+    return any(language == lan["name"].lower() for lan in languages)
