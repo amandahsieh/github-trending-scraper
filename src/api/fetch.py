@@ -11,10 +11,14 @@ def call_repo_api(url: str) -> List[dict]:
         response = requests.get(url)
         response.raise_for_status()
         repos = response.json()
-    except requests.RequestException as e:
+    except requests.RequestException as e: 
         print(f"Error fetching repositories: {e}")
         return []
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return []
     return repos
+
 
 def fetch_repos(period: str, language: Optional[str] = "") -> List[dict]:
     if language and not is_valid_language(language):
