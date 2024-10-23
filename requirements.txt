@@ -2,3 +2,4 @@ requests
 apscheduler
 pytest
 pytest-mock
+pytest-cov
