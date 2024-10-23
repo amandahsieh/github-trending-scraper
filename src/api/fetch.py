@@ -6,6 +6,16 @@ from .github_api import API_REPOS
 
 DESIRED_COLUMNS = ["author", "url", "stars", "forks", "language"]
 
+def call_repo_api(url: str) -> List[dict]:
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        repos = response.json()
+    except requests.RequestException as e:
+        print(f"Error fetching repositories: {e}")
+        return []
+    return repos
+
 def fetch_repos(period: str, language: Optional[str] = "") -> List[dict]:
     if language and not is_valid_language(language):
         raise ValueError(f"Invalid Language: {language}")
@@ -15,14 +25,7 @@ def fetch_repos(period: str, language: Optional[str] = "") -> List[dict]:
 
     language_param = urlquote(language, safe="+") if language else ""
     url = f"{API_REPOS}?language={language_param}&since={period}"
-
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        repos = response.json()
-    except requests.RequestException as e:
-        print(f"Error fetching repositories: {e}")
-        return []
+    repos = call_repo_api(url)
 
     return [
         {col: repo.get(col) for col in DESIRED_COLUMNS}
