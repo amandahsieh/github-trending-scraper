@@ -28,7 +28,6 @@ async def send_to_telegram(bot: TelegramBot, message: str):
     try:
         await bot.send_message(message)
         print("Message Sent")
-        # 增加延遲
         await asyncio.sleep(1)
     except Exception as e:
         print(f"Failed to send message: {e}")
@@ -50,7 +49,7 @@ async def fetch_repos(period: str, language: Optional[str] = "", bot: Optional[T
             [f"{repo['author']} - {repo['url']} (Stars: {repo['stars']})" for repo in repos[:5]]
         )
         print(f"Bot message: {message}")
-        await send_to_telegram(bot, message)  # 使用 await 發送消息
+        await send_to_telegram(bot, message)
 
     return [
         {col: repo.get(col) for col in DESIRED_COLUMNS}

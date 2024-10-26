@@ -7,6 +7,7 @@ from src.scheduler.scheduler import setup_scheduler
 async def main():
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
     bot = TelegramBot(token=TELEGRAM_TOKEN, chat_id=CHAT_ID)
+    await bot.run()
     setup_scheduler(bot)
     try:
         while True:
@@ -15,4 +16,7 @@ async def main():
         logging.info("Program interrupted by user.")
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except RuntimeError as e:
+        print(f"RuntimeError: {e}")
