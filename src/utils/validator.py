@@ -1,6 +1,9 @@
 import requests
 from src.api.github_api import API_LANGUAGES
 
+def validate_trending_data(data):
+    return isinstance(data, list) and all(isinstance(item, dict) for item in data)
+
 def languages_list() -> list:
     try:
         response = requests.get(API_LANGUAGES)

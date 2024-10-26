@@ -4,3 +4,5 @@ pytest-cov
 python-telegram-bot
 APScheduler
 requests
+aiohttp
+nest_asyncio

@@ -1,80 +1,42 @@
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-import logging
-import os
-from datetime import datetime
+from telegram.ext import Application, CommandHandler, ContextTypes
+from src.services.fetch_service import fetch_and_save_repos
 
-class TelegramBot:
-    def __init__(self, token, chat_id):
-        self.app = ApplicationBuilder().token(token).build()
-        self.chat_id = chat_id
-        self.add_handlers()
+class GithubTrendingBot:
+    def __init__(self, token):
+        self.app = Application.builder().token(token).build()
 
-    def add_handlers(self):
+    async def handle_trending(self, update: Update, context: ContextTypes.DEFAULT_TYPE, period: str, language=None):
         """
-        Add command handlers
+        Handle trending command to fetch, send, and save GitHub trending data for the specified period and language.
         """
-        self.app.add_handler(CommandHandler("daily", self.handle_daily))
-        self.app.add_handler(CommandHandler("weekly", self.handle_weekly))
-        self.app.add_handler(CommandHandler("monthly", self.handle_monthly))
+        await update.message.reply_text(f"Fetching {period} GitHub trending repositories for {language if language else 'all languages'}...")
+        
+        # Fetch and save the trending repositories
+        data = await fetch_and_save_repos(period, language)
 
-    async def handle_daily(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """
-        Handle /daily command and fetch daily GitHub trending
-        """
-        print("Handling /daily command")
-        await self.fetch_and_send_trending(update, 'daily')
-        print("Finished handling /daily command")
-
-    async def handle_weekly(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """
-        Handle /weekly command and fetch weekly GitHub trending
-        """
-        print("Handling /weekly command")
-        await self.fetch_and_send_trending(update, 'weekly')
-        print("Finished handling /weekly command")
-
-    async def handle_monthly(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """
-        Handle /monthly command and fetch monthly GitHub trending
-        """
-        print("Handling /monthly command")
-        await self.fetch_and_send_trending(update, 'monthly')
-        print("Finished handling /monthly command")
-
-    async def fetch_and_send_trending(self, update: Update, period: str):
-        """
-        fetch GitHub trending in specified period and send the message
-        """
-        from src.api.fetch import fetch_repos  # 延遲導入
-        from src.utils.file_handler import save_to_file
-
-        await update.message.reply_text(f"Fetching {period} GitHub trending repositories...")
-        try:
-            repos = await fetch_repos(period=period)
-            if repos:
-                message = f"{period.capitalize()} GitHub Trending:\n" + '\n'.join(
-                    [f"{repo['author']} - {repo['url']} (Stars: {repo['stars']})" for repo in repos[:5]]
-                )
-                await update.message.reply_text(message)
-                if isinstance(repos, list):
-                    filename = os.path.join(f"repos/{period}", f"{datetime.now().strftime('%Y%m%d')}.json")
-                    save_to_file(repos, filename)
-                else:
-                    print("Error: Data is not serializable.")
-            else:
-                await update.message.reply_text(f"No {period} trending repositories found.")
-        except Exception as e:
-            logging.error(f"Failed to fetch {period} trending: {e}")
-            await update.message.reply_text(f"Failed to fetch {period} trending repositories.")
-
+        if data:
+            # Construct the message to send to Telegram
+            message = f"{period.capitalize()} GitHub Trending for {language if language else 'all languages'}:\n" + '\n'.join(
+                [f"{repo['author']} - {repo['url']} (Stars: {repo['stars']})" for repo in data[:5]]
+            )
+            await update.message.reply_text(message)
+        else:
+            await update.message.reply_text(f"No {period} trending repositories found for {language if language else 'all languages'}.")
+            
     async def run(self):
-        """
-        Start Telegram bot in an asynchronous event loop
-        """
-        print("Starting bot...")
+        self.app.add_handler(CommandHandler('daily', lambda u, c: self.handle_trending(u, c, 'daily')))
+        self.app.add_handler(CommandHandler('weekly', lambda u, c: self.handle_trending(u, c, 'weekly')))
+        self.app.add_handler(CommandHandler('monthly', lambda u, c: self.handle_trending(u, c, 'monthly')))
+        self.app.add_handler(CommandHandler('language', self.handle_language))
+        await self.app.run_polling()
 
-        await self.app.initialize()
-        await self.app.start()
-        await self.app.updater.start_polling()
-
+    async def handle_language(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """
+        Handle the /language command to fetch daily trending data for a specified language.
+        """
+        if context.args:
+            language = context.args[0]
+            await self.handle_trending(update, context, 'daily', language)
+        else:
+            await self.handle_trending(update, context, 'daily')  # Fetch for all languages if not specified
