@@ -12,5 +12,5 @@ def schedule_jobs(bot, language=None):
     scheduler.add_job(lambda: run_async_task(), 'cron', day=1, hour=0, minute=0, args=["monthly", language, bot])
     scheduler.start()
 
-def run_async_task(period, language, bot):
-    asyncio.run(fetch_and_save_repos(period, language, bot))
+async def run_async_task(period, language, bot):
+    await fetch_and_save_repos(period, language, bot)
