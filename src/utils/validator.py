@@ -2,7 +2,22 @@ import requests
 from src.api.github_api import API_LANGUAGES
 
 def validate_trending_data(data):
-    return isinstance(data, list) and all(isinstance(item, dict) for item in data)
+    if not (isinstance(data, list) and all(isinstance(item, dict) for item in data)):
+        return False
+    for item in data:
+        if not isinstance(item.get("author"), str):
+            return False
+        if not isinstance(item.get("url"), str):
+            return False
+        if not isinstance(item.get("stars"), int):
+            return False
+        if not isinstance(item.get("forks"), int):
+            return False
+        if item.get("language") is not None and not isinstance(item.get("language"), str):
+            return False
+
+    return True
+
 
 def languages_list() -> list:
     try:
