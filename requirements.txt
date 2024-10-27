@@ -6,3 +6,4 @@ APScheduler
 requests
 aiohttp
 nest_asyncio
+pytest-asyncio
