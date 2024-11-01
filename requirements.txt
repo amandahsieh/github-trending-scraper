@@ -1,5 +1,9 @@
-requests
-apscheduler
 pytest
 pytest-mock
 pytest-cov
+python-telegram-bot
+APScheduler
+requests
+aiohttp
+nest_asyncio
+pytest-asyncio
