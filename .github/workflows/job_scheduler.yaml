@@ -1,0 +1,43 @@
+name: Job Scheduler
+
+on:
+  schedule:
+    # Daily at 14:55 UTC
+    - cron: "55 14 * * *"
+    # Weekly on Monday at 00:00 UTC
+    - cron: "0 0 * * 1"
+    # Monthly on the 1st at 00:00 UTC
+    - cron: "0 0 1 * *"
+
+jobs:
+  run-scheduled-jobs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run daily fetch and save
+      if: github.event.schedule == '30 0 * * *'
+      run: |
+        python -c "from src.services.fetch_service import fetch_and_save_repos; fetch_and_save_repos('daily')"
+
+    - name: Run weekly fetch and save
+      if: github.event.schedule == '0 0 * * 1'
+      run: |
+        python -c "from src.services.fetch_service import fetch_and_save_repos; fetch_and_save_repos('weekly')"
+
+    - name: Run monthly fetch and save
+      if: github.event.schedule == '0 0 1 * *'
+      run: |
+        python -c "from src.services.fetch_service import fetch_and_save_repos; fetch_and_save_repos('monthly')"

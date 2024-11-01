@@ -11,17 +11,10 @@ async def test_fetch_and_save_repos_valid_period_language(mock_makedirs, mock_sa
     """
     period = 'daily'
     language = 'python'
-    
-    # 執行資料抓取和保存
     data = await fetch_and_save_repos(period, language)
 
-    # 檢查返回的資料是否為列表
     assert isinstance(data, list), "Data should be a list"
-
-    # 檢查 save_to_file 是否被調用
     assert mock_save_to_file.called, "save_to_file should be called"
-
-    # 檢查是否創建了目錄
     assert mock_makedirs.called, "os.makedirs should be called"
 
 
@@ -38,7 +31,7 @@ async def test_fetch_and_save_repos_invalid_period():
 @pytest.mark.asyncio
 async def test_fetch_and_save_repos_no_data(tmpdir):
     period = 'daily'
-    language = 'cobol'  # 使用一個有效但可能無數據的語言
+    language = 'cobol' 
     test_dir = tmpdir.mkdir("repos")
     
     data = await fetch_and_save_repos(period, language)
@@ -49,21 +42,17 @@ async def test_fetch_and_save_repos_no_data(tmpdir):
 @patch('src.services.fetch_service.os.makedirs')
 async def test_fetch_and_save_repos_save_failure(mock_makedirs, mock_save_to_file, capsys):
     """
-    測試在保存數據時發生異常的情況。
+    Test abnormal events in data saving
     """
     period = 'daily'
     language = 'python'
     
-    # 執行資料抓取和保存
     data = await fetch_and_save_repos(period, language)
     
-    # 檢查返回的資料是否為列表
     assert isinstance(data, list), "Data should be a list"
 
-    # 確認 save_to_file 被正確調用並引發異常
     mock_save_to_file.assert_called_once()
     
-    # 捕捉並檢查標準輸出
     captured = capsys.readouterr()
     assert "Failed to save data to" in captured.out
     assert "Mocked exception" in captured.out

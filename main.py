@@ -2,7 +2,6 @@ import logging
 import asyncio
 import nest_asyncio
 from src.bot.telegram_bot import GithubTrendingBot
-from src.scheduler.job_scheduler import schedule_jobs
 from src.bot.key import TELEGRAM_TOKEN
 
 # Apply nest_asyncio to allow nested event loops
@@ -19,10 +18,6 @@ async def main():
     bot = GithubTrendingBot(token=TELEGRAM_TOKEN)
     logging.info("Starting Telegram Bot...")
     await bot.run()
-
-    # Set up the scheduler for fetching GitHub trending data
-    logging.info("Setting up the scheduler...")
-    schedule_jobs(bot)
 
     try:
         # Keep the program running
