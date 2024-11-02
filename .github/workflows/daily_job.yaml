@@ -2,8 +2,8 @@ name: Daily GitHub Trending
 
 on:
   schedule:
-    # Daily at 21:30 (+8:00 UTC)
-    - cron: "30 13 * * *"
+    # Daily at 22:00 (+8:00 UTC)
+    - cron: "0 14 * * *"
   # Manual trigger
   workflow_dispatch:
 
