@@ -2,8 +2,8 @@ name: Monthly Job Scheduler
 
 on:
   schedule:
-    # Monthly on the 1st at 00:00 UTC
-    - cron: "0 0 1 * *"
+    # Monthly on the 1st at 13:00 (+8:00 UTC)
+    - cron: "0 5 1 * *"
   # Manual trigger
   workflow_dispatch:
 

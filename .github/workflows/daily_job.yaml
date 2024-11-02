@@ -2,8 +2,8 @@ name: Daily Job Scheduler
 
 on:
   schedule:
-    # Daily at 21:00 UTC
-    - cron: "0 21 * * *"
+    # Daily at 21:30 (+8:00 UTC)
+    - cron: "30 13 * * *"
   # Manual trigger
   workflow_dispatch:
 
