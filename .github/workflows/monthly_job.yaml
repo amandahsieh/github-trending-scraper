@@ -1,0 +1,30 @@
+name: Monthly Job Scheduler
+
+on:
+  schedule:
+    # Monthly on the 1st at 00:00 UTC
+    - cron: "0 0 1 * *"
+  # Manual trigger
+  workflow_dispatch:
+
+jobs:
+  run-monthly-job:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run monthly fetch and save
+      run: |
+        python -c "from src.services.fetch_service import fetch_and_save_repos; fetch_and_save_repos('monthly')"
