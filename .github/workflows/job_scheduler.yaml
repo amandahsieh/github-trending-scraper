@@ -3,7 +3,7 @@ name: Job Scheduler
 on:
   schedule:
     # Daily at 14:55 UTC
-    - cron: "0 14 * * *"
+    - cron: "0 21 * * *"
     # Weekly on Monday at 00:00 UTC
     - cron: "0 0 * * 1"
     # Monthly on the 1st at 00:00 UTC
@@ -28,7 +28,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run daily fetch and save
-      if: github.event.schedule == '0 14 * * *'
+      if: github.event.schedule == '0 21 * * *'
       run: |
         python -c "from src.services.fetch_service import fetch_and_save_repos; fetch_and_save_repos('daily')"
 
