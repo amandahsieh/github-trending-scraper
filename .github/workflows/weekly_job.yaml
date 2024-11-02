@@ -1,4 +1,4 @@
-name: Weekly Job Scheduler
+name: Monthly GitHub Trending
 
 on:
   schedule:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-weekly-job:
+  run-monthly-job:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +25,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run weekly fetch and save
+    - name: Send Monthly GitHub Trending to Telegram
+      env:
+        TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: |
-        python -c "from src.services.fetch_service import fetch_and_save_repos; fetch_and_save_repos('weekly')"
+        python -c "
+import os
+from src.bot.telegram_bot import GithubTrendingBot
+bot = GithubTrendingBot(os.getenv('TELEGRAM_TOKEN'))
+await bot.handle_trending(period='monthly')"
