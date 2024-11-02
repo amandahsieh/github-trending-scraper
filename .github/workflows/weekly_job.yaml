@@ -1,14 +1,14 @@
-name: Monthly GitHub Trending
+name: Weekly GitHub Trending
 
 on:
   schedule:
-    # Weekly on Monday at 18:00 (+8:00 UTC)
-    - cron: "0 10 * * 1"
+    # Weekly on Monday at 18:30 (+8:00 UTC)
+    - cron: "30 10 * * 1"
   # Manual trigger
   workflow_dispatch:
 
 jobs:
-  run-monthly-job:
+  run-weekly-job:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,13 +25,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Send Monthly GitHub Trending to Telegram
+    - name: Send Weekly GitHub Trending to Telegram
       env:
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: |
-        python -c "
-import os
-from src.bot.telegram_bot import GithubTrendingBot
-bot = GithubTrendingBot(os.getenv('TELEGRAM_TOKEN'))
-await bot.handle_trending(period='monthly')"
+        python -c "import os; from src.bot.telegram_bot import GithubTrendingBot; bot = GithubTrendingBot(os.getenv('TELEGRAM_TOKEN')); import asyncio; asyncio.run(bot.handle_trending(period='weekly'))"
