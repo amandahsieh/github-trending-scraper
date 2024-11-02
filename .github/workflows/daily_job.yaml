@@ -34,4 +34,5 @@ jobs:
 import os
 from src.bot.telegram_bot import GithubTrendingBot
 bot = GithubTrendingBot(os.getenv('TELEGRAM_TOKEN'))
-await bot.handle_trending(period='daily')"
+import asyncio
+asyncio.run(bot.handle_trending(period='daily'))"
