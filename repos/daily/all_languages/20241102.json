@@ -1,0 +1,114 @@
+[
+    {
+        "author": "kestra-io",
+        "url": "https://github.com/kestra-io/kestra",
+        "stars": 11572,
+        "forks": 989,
+        "language": "Java"
+    },
+    {
+        "author": "paperless-ngx",
+        "url": "https://github.com/paperless-ngx/paperless-ngx",
+        "stars": 20838,
+        "forks": 1136,
+        "language": "Python"
+    },
+    {
+        "author": "microsoft",
+        "url": "https://github.com/microsoft/genaiscript",
+        "stars": 746,
+        "forks": 61,
+        "language": "TypeScript"
+    },
+    {
+        "author": "filamentphp",
+        "url": "https://github.com/filamentphp/filament",
+        "stars": 18831,
+        "forks": 2926,
+        "language": "PHP"
+    },
+    {
+        "author": "getmaxun",
+        "url": "https://github.com/getmaxun/maxun",
+        "stars": 840,
+        "forks": 53,
+        "language": "TypeScript"
+    },
+    {
+        "author": "open-mmlab",
+        "url": "https://github.com/open-mmlab/Amphion",
+        "stars": 6958,
+        "forks": 513,
+        "language": "Jupyter Notebook"
+    },
+    {
+        "author": "ansible",
+        "url": "https://github.com/ansible/ansible",
+        "stars": 62798,
+        "forks": 23891,
+        "language": "Python"
+    },
+    {
+        "author": "GeostatsGuy",
+        "url": "https://github.com/GeostatsGuy/DataScienceInteractivePython",
+        "stars": 921,
+        "forks": 181,
+        "language": "Jupyter Notebook"
+    },
+    {
+        "author": "timescale",
+        "url": "https://github.com/timescale/pgai",
+        "stars": 1257,
+        "forks": 59,
+        "language": "Python"
+    },
+    {
+        "author": "electric-capital",
+        "url": "https://github.com/electric-capital/crypto-ecosystems",
+        "stars": 1495,
+        "forks": 1389,
+        "language": "Rust"
+    },
+    {
+        "author": "dgtlmoon",
+        "url": "https://github.com/dgtlmoon/changedetection.io",
+        "stars": 18201,
+        "forks": 1006,
+        "language": "Python"
+    },
+    {
+        "author": "hiyouga",
+        "url": "https://github.com/hiyouga/LLaMA-Factory",
+        "stars": 33428,
+        "forks": 4108,
+        "language": "Python"
+    },
+    {
+        "author": "Cinnamon",
+        "url": "https://github.com/Cinnamon/kotaemon",
+        "stars": 15000,
+        "forks": 1167,
+        "language": "Python"
+    },
+    {
+        "author": "usememos",
+        "url": "https://github.com/usememos/memos",
+        "stars": 32668,
+        "forks": 2408,
+        "language": "Go"
+    },
+    {
+        "author": "trufflesecurity",
+        "url": "https://github.com/trufflesecurity/trufflehog",
+        "stars": 16342,
+        "forks": 1679,
+        "language": "Go"
+    },
+    {
+        "author": "unclecode",
+        "url": "https://github.com/unclecode/crawl4ai",
+        "stars": 15272,
+        "forks": 1092,
+        "language": "Python"
+    }
+]
