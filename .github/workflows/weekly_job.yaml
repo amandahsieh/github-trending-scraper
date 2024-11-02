@@ -2,8 +2,8 @@ name: Weekly Job Scheduler
 
 on:
   schedule:
-    # Weekly on Monday at 00:00 UTC
-    - cron: "0 0 * * 1"
+    # Weekly on Monday at 18:00 (+8:00 UTC)
+    - cron: "0 10 * * 1"
   # Manual trigger
   workflow_dispatch:
 

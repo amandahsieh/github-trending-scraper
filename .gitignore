@@ -4,3 +4,4 @@ venv/
 */*/__pycache__
 .coverage
 src/bot/key.py
+.pytest_cache/
