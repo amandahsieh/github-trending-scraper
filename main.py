@@ -7,6 +7,12 @@ from src.bot.key import TELEGRAM_TOKEN
 # Apply nest_asyncio to allow nested event loops
 nest_asyncio.apply()
 
+async def shutdown():
+    tasks = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
+    for task in tasks:
+        task.cancel()
+    await asyncio.gather(*tasks, return_exceptions=True)
+
 async def main():
     """
     Main function to run the Telegram bot and set up the scheduler.
@@ -24,9 +30,11 @@ async def main():
         while True:
             await asyncio.sleep(1)
     except KeyboardInterrupt:
-        logging.info("Program interrupted by user.")
-    except Exception as e:
-        logging.error(f"An error occurred: {e}")
+        logging.info("KeyboardInterrupt received. Stopping bot...")
+        await bot.app.updater.stop()
+        await bot.app.stop()
+        await bot.app.shutdown()
+        logging.info("Bot stopped successfully.")
 
 if __name__ == "__main__":
     try:

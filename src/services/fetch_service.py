@@ -1,6 +1,5 @@
 from typing import Optional, List
-from urllib.parse import quote as urlquote
-from src.api.github_api import API_REPOS, call_repo_api
+from src.api.github_api import scrape_github_trending
 from src.utils.file_handler import save_to_file
 from datetime import datetime
 import os
@@ -20,12 +19,7 @@ async def fetch_and_save_repos(period: str, language: Optional[str] = "", bot=No
     if period not in ("daily", "weekly", "monthly"):
         raise ValueError(f"Invalid Period: {period}")
 
-    # Prepare the API URL
-    language_param = urlquote(language, safe="+") if language else ""
-    url = f"{API_REPOS}?language={language_param}&since={period}"
-
-    # Call the repository API
-    repos = call_repo_api(url)
+    repos = scrape_github_trending(language, period)
 
     if not repos:
         print(f"No repositories found for {period} ({language if language else 'all languages'}).")
