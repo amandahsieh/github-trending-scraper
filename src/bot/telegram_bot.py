@@ -55,7 +55,7 @@ class GithubTrendingBot:
         if data:
             # Construct the message to send to Telegram
             message = f"{period.capitalize()} GitHub Trending for {language if language else 'all languages'}:\n" + '\n'.join(
-                [f"{repo['author']} - {repo['url']} (Stars: {repo['stars']})" for repo in data[:5]]
+                [f"{repo['author']} - {repo['url']} (Stars: {repo['stars']})" for repo in data[:10]]
             )
             self.send_message(message)
         else:
