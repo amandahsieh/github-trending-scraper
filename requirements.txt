@@ -7,3 +7,4 @@ requests
 aiohttp
 nest_asyncio
 pytest-asyncio
+bs4
